@@ -1,0 +1,137 @@
+/*comentei todo o codigo e iniciei a construção da função jogar.
+tabuleiro está sendo impresso na tela; adicionei cores ao tabuleiro; adicionei a opção de digitar 0 no meio do jogo e encerrar ele(por enquanto não está funcionando corretamente,
+pois precisamos adicionar as funcionalidades de movimentar as teclas)*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TAMANHO 4
+
+//pintar o tabuleiro
+#define RESET     "\033[0m"
+#define PRETO     "\033[30m"
+#define BRANCO_BG "\033[47m"
+#define VERMELHO  "\033[31m"
+
+// o tamanho do tabuleiro
+int jogo[TAMANHO][TAMANHO];
+
+//struct do jogador
+struct Jogador {
+	char nome [50];
+	int tempo;
+};
+
+//funcionalidades do menu
+void menu();
+void jogar();
+void inicializar();
+void exibirTabuleiro();
+void estatisticas();
+
+//início do main
+int main() {
+    menu();
+    return 0;
+}
+
+//corpo da função menu
+void menu() {
+    int opcao;
+
+    do {
+        printf("\n=== QUEBRA CABECA DESLIZANTE ===\n");
+        printf("1. Jogar\n");
+        printf("2. Estatisticas\n");
+        printf("3. Sair\n");
+        printf("================================\n");
+        printf("Opcao: ");
+        scanf("%d", &opcao);
+
+        switch(opcao) {
+            case 1:
+                jogar();
+                break;
+            
+            case 2:
+                estatisticas();
+                break;
+            
+            case 3:
+                printf("\nSaindo...\n");
+                break;
+
+            default:
+                printf("\nOpcao invalida. Tente novamente.\n");
+                break;
+        }
+    } while(opcao != 3);
+}
+
+void inicializar() { // posiciona os números de 1 a 15, e deixa um espaço vazio
+    int num = 1;
+    for(int i = 0; i < TAMANHO; i++) {
+        for(int j = 0; j < TAMANHO; j++) {
+            jogo[i][j] = num++;
+        }
+    }
+    jogo[TAMANHO - 1][TAMANHO - 1] = 0;
+}
+
+//função para exibir o tabuleiro na tela
+void exibirTabuleiro(){
+    printf("\n");
+    printf(VERMELHO "+------+------+------+------+\n" RESET);
+    
+    for (int i = 0; i < TAMANHO; i++) {
+        printf(VERMELHO "|" RESET);
+        for (int j = 0; j < TAMANHO; j++) {
+            if (jogo[i][j] == 0) {
+                printf(BRANCO_BG "      " RESET);
+            } else {
+                printf(BRANCO_BG PRETO "  %2d  " RESET, jogo[i][j]);
+            }
+            printf(VERMELHO "|" RESET);
+        }
+        printf("\n");
+        printf(VERMELHO "+------+------+------+------+\n" RESET);
+    }
+    printf("\n");
+}
+
+//corpo da função jogar
+void jogar() {
+	struct Jogador jogador; //variavel local que se chama jogador. Ela é do tipo struct Jogador
+	char resposta;//para confirmar a resposta se quiser sair do jogo
+	int opcao; //para digitar 0 e encerrar o jogo
+	
+	printf ("\nDigite o nome do jogador: ");
+	fflush(stdin); //para limpar o buffer do teclado
+	fgets (jogador.nome, 50, stdin); //para ler o nome do jogador
+	
+	inicializar();//chamada da função inicalizar que ja foi dfinida
+	
+	while (1){//laço while para manter o jogo rodando com a pergunta se o jogador deseja sair do jogo
+		system("cls"); //pra limpar a tela quando a gente começar a jogar
+		exibirTabuleiro();
+		
+		printf("Digite 0 para sair e encerrar o jogo: ");
+		scanf("%d", &opcao);//se digitar 0 vai perguntar se quer sair
+		
+		if (opcao == 0){
+			printf("Tem certeza que deseja encerrar o jogo? (s/n): ");
+			scanf(" %c", &resposta);//se digitar 'S' ele sai do jogo
+			
+			if (resposta == 's' || resposta == 'S'){
+				system("cls");
+				break; //sai do laço, limpa a tela e volta pro menu
+			}
+		}
+		
+		//aqui vamos criar a movimentação de peças
+	}
+}
+
+void estatisticas() {
+
+}
